@@ -1,28 +1,29 @@
 package com.practica.api_jugadores;
 
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;  
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
-@RestController
-@RequestMapping("/jugadores")
 
+@RestController//Indica que esta clase es un controlador REST que maneja solicitudes HTTP
+@RequestMapping("/jugadores")//Define la ruta base para las solicitudes a este controlador
 public class JugadorController {
-    //ArrayList para almacenar los jugadores en memoria
-    private List<Jugador> jugadores = new ArrayList<>();
 
-    public JugadorController() {
-        //Agregar algunos jugadores de ejemplo
-        jugadores.add(new Jugador(1, "Dak Prescott", "Quarterback"));
-        jugadores.add(new Jugador(2, "CeeDee Lamb", "Receptor Abierto"));
-        jugadores.add(new Jugador(3, "Jake Ferguson", "Ala cerrada"));
+    @Autowired//Inyecta una instancia de JugadorRepositorio para acceder a los datos de los jugadores
+    private JugadorRepositorio jugadorRepositorio;
+    
+    @GetMapping//Maneja las solicitudes HTTP GET a la ruta /jugadores
+    public List<Jugador> obtenerJugadores() {
+        return jugadorRepositorio.findAll();//Buscamos todos los jugadores en la base de datos y los retornamos
     }
 
-    @GetMapping
-    public List<Jugador> obtenerJugadores() {
-        return jugadores;
+    @PostMapping//Maneja las solicitudes HTTP POST a la ruta /jugadores
+    public Jugador agregarJugador(@RequestBody Jugador jugadorNuevo){
+        return jugadorRepositorio.save(jugadorNuevo);//Guardamos el nuevo jugador en la base de datos y lo retornamos
     }
 }

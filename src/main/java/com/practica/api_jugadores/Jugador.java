@@ -1,26 +1,34 @@
 package com.practica.api_jugadores;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
+@Entity // Indica que esta clase es una entidad JPA osea que va a crear una tabla en la base de datos
 public class Jugador {
 
-    private int id;
+    @Id //Indica que este atributo es la clave primaria de la entidad
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Indica que el valor del ID se genera automaticamente
+    private Long id;
     private String nombre;
     private String posicion;
 
+    //Siempre JPA nos va a obligar a tener un constructor vacio por eso lo dejé desde la version pasada
     public Jugador(){
     }
 
-    public Jugador(int id, String nombre, String posicion) {
+    public Jugador(Long id, String nombre, String posicion) {
         this.id = id;
         this.nombre = nombre;
         this.posicion = posicion;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
